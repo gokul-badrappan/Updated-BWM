@@ -31,7 +31,7 @@ function createScoreInput(id, name, isDisabled = false) {
 
     const placeholder = document.createElement('option');
     placeholder.value = '';
-    placeholder.text = 'Select your important score between 1 to 9';
+    placeholder.text = 'Select your score between 1 to 9';
     placeholder.disabled = true;
     placeholder.selected = true;
     select.add(placeholder);
@@ -364,41 +364,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify(data)
             });
             
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            
             const result = await response.json();
-            
-            if (result.error) {
-                alert('Error: ' + result.error);
-                return;
-            }
             
             if (result.weights && result.ksi_value) {
                 let resultsHtml = '<div class="space-y-4">';
-                
-                // Display BWM Matrix
-                resultsHtml += '<div class="mb-4"><h3 class="font-bold mb-2">BWM Input Matrix:</h3><div class="overflow-x-auto"><table class="min-w-full border-collapse border border-gray-300">';
-                
-                // Add column headers
-                resultsHtml += '<tr><th class="border border-gray-300 px-4 py-2"></th>';
-                for (let i = 0; i < result.bwm_matrix[0].length; i++) {
-                    resultsHtml += `<th class="border border-gray-300 px-4 py-2">Factor ${i + 1}</th>`;
-                }
-                resultsHtml += '</tr>';
-                
-                // Add matrix rows
-                result.bwm_matrix.forEach((row, rowIndex) => {
-                    resultsHtml += `<tr><th class="border border-gray-300 px-4 py-2">Factor ${rowIndex + 1}</th>`;
-                    row.forEach(cell => {
-                        resultsHtml += `<td class="border border-gray-300 px-4 py-2 text-center">${cell}</td>`;
-                    });
-                    resultsHtml += '</tr>';
-                });
-                resultsHtml += '</table></div></div>';
     
-                // Display Weights
+                // Build BWM Matrix HTML (hidden by default)
+                let matrixHtml = '<div class="mb-4"><h3 class="font-bold mb-2">BWM Input Matrix:</h3><div class="overflow-x-auto"><table class="min-w-full border-collapse border border-gray-300">';
+                matrixHtml += '<tr><th class="border border-gray-300 px-4 py-2"></th>';
+                for (let i = 0; i < result.bwm_matrix[0].length; i++) {
+                    matrixHtml += `<th class="border border-gray-300 px-4 py-2">Factor ${i + 1}</th>`;
+                }
+                matrixHtml += '</tr>';
+                result.bwm_matrix.forEach((row, rowIndex) => {
+                    matrixHtml += `<tr><th class="border border-gray-300 px-4 py-2">Factor ${rowIndex + 1}</th>`;
+                    row.forEach(cell => {
+                        matrixHtml += `<td class="border border-gray-300 px-4 py-2 text-center">${cell}</td>`;
+                    });
+                    matrixHtml += '</tr>';
+                });
+                matrixHtml += '</table></div></div>';
+    
+                // Display Priority Weights
                 resultsHtml += '<div class="mb-4"><h3 class="font-bold mb-2">Calculated Priority Weights:</h3>';
                 result.weights.forEach((weight, index) => {
                     resultsHtml += `
@@ -408,7 +395,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>`;
                 });
                 resultsHtml += '</div>';
-                
+    
                 // Display Objective Value
                 resultsHtml += `
                     <div class="mt-4 pt-4 border-t">
@@ -416,17 +403,38 @@ document.addEventListener('DOMContentLoaded', function() {
                             <span class="font-bold">Objective Value (ξ):</span>
                             <span>${result.ksi_value.toFixed(6)}</span>
                         </div>
+                    </div>`;
+    
+                // Add Toggle Checkbox and Hidden Matrix
+                resultsHtml += `
+                    <div class="mt-4">
+                        <label class="inline-flex items-center space-x-2">
+                            <input type="checkbox" id="showMatrixCheckbox" class="form-checkbox">
+                            <span>Show input BWM matrix</span>
+                        </label>
                     </div>
-                </div>`;
-                
+                    <div id="bwm-matrix-container" class="hidden">
+                        ${matrixHtml}
+                    </div>
+                `;
+    
+                resultsHtml += '</div>'; // Close space-y-4 div
                 document.getElementById('results').innerHTML = resultsHtml;
+    
+                // Add event listener for the checkbox
+                const checkbox = document.getElementById('showMatrixCheckbox');
+                const matrixContainer = document.getElementById('bwm-matrix-container');
+                if (checkbox && matrixContainer) {
+                    checkbox.addEventListener('change', function() {
+                        matrixContainer.classList.toggle('hidden', !this.checked);
+                    });
+                }
             }
-        } catch (error) {
+        } catch (error) { 
             console.error('Error:', error);
             alert('An error occurred while calculating the weights.');
             document.getElementById('results').innerHTML = '<p class="text-red-500">An error occurred while calculating the weights.</p>';
         } finally {
-            // Reset loading state
             setLoadingState(false);
         }
     });
