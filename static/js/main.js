@@ -370,7 +370,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 let resultsHtml = '<div class="space-y-4">';
     
                 // Build BWM Matrix HTML (hidden by default)
-                let matrixHtml = '<div class="mb-4"><h3 class="font-bold mb-2">BWM Input Matrix:</h3><div class="overflow-x-auto"><table class="min-w-full border-collapse border border-gray-300">';
+                let matrixHtml = '<div class="mb-4"><h3 class="font-bold mb-2">BWM Modified Matrix:</h3><div class="overflow-x-auto"><table class="min-w-full border-collapse border border-gray-300">';
                 matrixHtml += '<tr><th class="border border-gray-300 px-4 py-2"></th>';
                 for (let i = 0; i < result.bwm_matrix[0].length; i++) {
                     matrixHtml += `<th class="border border-gray-300 px-4 py-2">Factor ${i + 1}</th>`;
