@@ -244,7 +244,7 @@ async function calculateWeights(event) {
             let resultsHtml = '<div class="space-y-4">';
             
             // Display BWM Matrix
-            resultsHtml += '<div class="mb-4"><h3 class="font-bold mb-2">BWM Input Matrix:</h3><div class="overflow-x-auto"><table class="min-w-full border-collapse border border-gray-300">';
+            resultsHtml += '<div class="mb-4"><h3 class="font-bold mb-2">BWM Modified Matrix:</h3><div class="overflow-x-auto"><table class="min-w-full border-collapse border border-gray-300">';
             
             // Add column headers
             resultsHtml += '<tr><th class="border border-gray-300 px-4 py-2"></th>';
