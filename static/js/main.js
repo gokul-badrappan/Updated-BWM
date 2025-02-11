@@ -31,7 +31,7 @@ function createScoreInput(id, name, isDisabled = false) {
 
     const placeholder = document.createElement('option');
     placeholder.value = '';
-    placeholder.text = 'Select your score between 1 to 9';
+    placeholder.text = 'Select score between 1 to 9';
     placeholder.disabled = true;
     placeholder.selected = true;
     select.add(placeholder);
