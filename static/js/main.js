@@ -244,8 +244,7 @@ async function calculateWeights(event) {
             let resultsHtml = '<div class="space-y-4">';
             
             // Display BWM Matrix
-            resultsHtml += '<div class="mb-4"><h3 class="font-bold mb-2">BWM Modified Matrix:</h3><div class="overflow-x-auto"><table class="min-w-full border-collapse border border-gray-300">';
-            
+            resultsHtml += '<div class="mb-4"><h3 class="text-lg font-semibold mb-2">BWM Modified Matrix:</h3><div class="overflow-x-auto"><table class="w-full border-collapse border border-gray-300"><thead><tr class="bg-gray-200"></tr></thead><tbody></tbody></table></div></div>';
             // Add column headers
             resultsHtml += '<tr><th class="border border-gray-300 px-4 py-2"></th>';
             for (let i = 0; i < result.bwm_matrix[0].length; i++) {
@@ -368,23 +367,28 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (result.weights && result.ksi_value) {
                 let resultsHtml = '<div class="space-y-4">';
-    
-                // Build BWM Matrix HTML (hidden by default)
-                let matrixHtml = '<div class="mb-4"><h3 class="font-bold mb-2">BWM Input Matrix:</h3><div class="overflow-x-auto"><table class="min-w-full border-collapse border border-gray-300">';
-                matrixHtml += '<tr><th class="border border-gray-300 px-4 py-2"></th>';
-                for (let i = 0; i < result.bwm_matrix[0].length; i++) {
-                    matrixHtml += `<th class="border border-gray-300 px-4 py-2">Factor ${i + 1}</th>`;
-                }
-                matrixHtml += '</tr>';
-                result.bwm_matrix.forEach((row, rowIndex) => {
-                    matrixHtml += `<tr><th class="border border-gray-300 px-4 py-2">Factor ${rowIndex + 1}</th>`;
-                    row.forEach(cell => {
-                        matrixHtml += `<td class="border border-gray-300 px-4 py-2 text-center">${cell}</td>`;
-                    });
-                    matrixHtml += '</tr>';
-                });
-                matrixHtml += '</table></div></div>';
-    
+
+// Build BWM Matrix HTML (hidden by default)
+let matrixHtml = '<div class="mb-4"><h3 class="text-lg font-semibold mb-2">BWM Modified Matrix</h3><div class="overflow-x-auto">';
+matrixHtml += '<table class="w-full border-collapse border border-gray-300">';
+matrixHtml += '<thead><tr class="bg-gray-200"><th class="border border-gray-300 px-4 py-2"></th>';
+
+// Table header
+for (let i = 0; i < result.bwm_matrix[0].length; i++) {
+    matrixHtml += `<th class="border border-gray-300 px-4 py-2">Factor ${i + 1}</th>`;
+}
+matrixHtml += '</tr></thead><tbody>';
+
+// Table body
+result.bwm_matrix.forEach((row, rowIndex) => {
+    matrixHtml += `<tr><th class="border border-gray-300 px-4 py-2 bg-gray-100">Factor ${rowIndex + 1}</th>`;
+    row.forEach(cell => {
+        matrixHtml += `<td class="border border-gray-300 px-4 py-2 text-center">${cell}</td>`;
+    });
+    matrixHtml += '</tr>';
+});
+
+matrixHtml += '</tbody></table></div></div>';
                 // Display Priority Weights
                 resultsHtml += '<div class="mb-4"><h3 class="font-bold mb-2">Calculated Priority Weights:</h3>';
                 result.weights.forEach((weight, index) => {
@@ -410,7 +414,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="mt-4">
                         <label class="inline-flex items-center space-x-2">
                             <input type="checkbox" id="showMatrixCheckbox" class="form-checkbox">
-                            <span>Show input BWM matrix</span>
+                            <span>Show modified BWM Matrix</span>
                         </label>
                     </div>
                     <div id="bwm-matrix-container" class="hidden">
