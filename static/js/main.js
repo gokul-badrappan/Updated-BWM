@@ -1,6 +1,7 @@
 // Global validation state
 let isValid = false;
 
+// Function to set the loading state of the form
 function setLoadingState(isLoading) {
     const calculateBtn = document.getElementById('calculate-btn');
     const buttonText = document.getElementById('button-text');
@@ -18,6 +19,7 @@ function setLoadingState(isLoading) {
         loadingSpinner.classList.add('hidden');
     }
 }
+
 // Utility function to create score input dropdown
 function createScoreInput(id, name, isDisabled = false) {
     const select = document.createElement('select');
@@ -207,7 +209,6 @@ async function validateFactors() {
 }
 
 // Calculate weights
-
 async function calculateWeights(event) {
     event.preventDefault();
     
@@ -311,6 +312,7 @@ async function calculateWeights(event) {
         alert('An error occurred while calculating the weights.');
     }
 }
+
 // Event Listeners
 document.addEventListener('DOMContentLoaded', function() {
     // Number of factors change
