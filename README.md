@@ -37,7 +37,7 @@ A web-based calculator implementing the New Best-Worst Method for multi-criteria
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/gokul-badrappan/Updated-BWM
 cd bwm-calculator
 ```
 
